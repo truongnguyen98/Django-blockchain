@@ -1,0 +1,73 @@
+
+{% extends "blockchain/base.html" %}
+
+{% load crispy_forms_tags %}
+{% block content%}
+
+<h1> Track your product</h1>
+
+<!--Accordion wrapper-->
+  <div class="panel-group" id="myAccordion">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title ml-2" data-target="#panel-1" data-toggle="collapse"> Producer<i class="fas fa-angle-down ml-2"></i></h3>
+      </div>
+      <div class="panel-collapse collapse" id="panel-1">
+        <div class="panel-body">
+          <form method="POST" >
+            {% csrf_token %}
+            <fieldset class="form-group ml-2 col-md-8">
+                <legend class="border-bottom mb-4" > Fill producer form</legend>
+                {{form|crispy}}
+            </fieldset>
+            <div class="form-group ml-2">
+                <button class="btn btn-outline-info" type="submit">Sign up</button>
+            </div>
+            
+        </form>
+        </div>
+      </div>
+
+      <div class="panel-heading">
+        <h3 class="panel-title ml-2" data-target="#panel-2" data-toggle="collapse">Shipper<i class="fas fa-angle-down ml-2"></i></h3>
+      </div>
+      <div class="panel-collapse collapse" id="panel-2">
+        <div class="panel-body">
+          <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group ml-2 col-md-8">
+                <legend class="border-bottom mb-4"> Fill shipper form</legend>
+                {%crispy form %}
+            </fieldset>
+            <div class="form-group ml-2">
+                <button class="btn btn-outline-info" type="submit">Sign up</button>
+            </div>
+            
+        </form>
+        </div>
+      </div>
+
+      <div class="panel-heading">
+        <h3 class="panel-title ml-2" data-target="#panel-3" data-toggle="collapse">Trader<i class="fas fa-angle-down ml-2"></i></h3>
+      </div>
+      <div class="panel-collapse collapse" id="panel-3">
+        <div class="panel-body">
+          <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group ml-2 col-md-8">
+                <legend class="border-bottom mb-4">Fill trader form</legend>
+                {%crispy form %}
+            </fieldset>
+            <div class="form-group ml-2">
+                <button class="btn btn-outline-info" type="submit">Sign up</button>
+            </div>
+            
+        </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+<!-- Accordion wrapper -->
+    
+{%endblock content%}
