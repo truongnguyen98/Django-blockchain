@@ -1,12 +1,8 @@
 from rest_framework import serializers
-from .models import Transaction, Block
+from .models import Block,Transaction
+from drf_braces.serializers.form_serializer import FormSerializer
 
-class TransactionSerializer(serializers.ModelSerializer):
-    class Meta:
-        transaction = Transaction
-        fields = ['index','common_name'
-        #,'date','region','country','company','company','other'
-        ]
+
 
 class BlockSerializer(serializers.ModelSerializer):
     class Meta:

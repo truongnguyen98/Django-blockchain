@@ -67,14 +67,15 @@ class Block(models.Model):
         return self.__hash__()[:4] == '0000'
 
 class Transaction (models.Model):
-    index = models.IntegerField(auto_created=True, blank=True)
-    common_name= models.TextField(blank=True, max_length=255)
-   # date = models.DateField
-    #region = models.TextField(blank=True, max_length=100)
-    #country = models.TextField(blank=True, max_length=50)
-    ##company = models.TextField(blank=True, max_length=255)
-   # amount = models.TextField(blank=True, max_length=50)
-    #file = models.FileField
+    index = models.IntegerField(auto_created=True, blank=True,null=True)
+    product_id = models.IntegerField()
+    current_date = models.DateTimeField(auto_now=True)
+    expire_date = models.DateTimeField(blank=True)
+    country = models.CharField(max_length=50)
+    amount = models.IntegerField()
+    common_name= models.TextField(blank=True, max_length=255,null=True)
+    fileAttached = models.FileField()
+    
 
     def __str__(self):
         return "Transaction " + str(self.index)

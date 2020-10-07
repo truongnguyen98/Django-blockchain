@@ -1,13 +1,22 @@
-from django import forms
+from django.forms import ModelForm
+from .models import Transaction
 
 
-class TransactionForm(forms.Form):
-    index = forms.IntegerField()
-    common_name= forms.CharField()
-    #date = forms.DateField()
-    #region = forms.CharField()
-    #country = forms.CharField()
-    #company = forms.CharField()
-    #amount = forms.CharField()
-    #file = forms.FileField()
+class ProducerForm(ModelForm):
+    class Meta:
+        model = Transaction
+        fields = ['product_id','common_name','expire_date','country','amount','fileAttached']
+class ShipperForm(ModelForm):
+    class Meta:
+        model = Transaction
+        fields = ['product_id','common_name','country','amount','fileAttached']
+class WholesalerForm(ModelForm):
+    class Meta:
+        model = Transaction
+        fields = ['product_id','common_name','country','amount','fileAttached']
+class DetailerForm(ModelForm):
+    class Meta:
+        model = Transaction
+        fields = ['product_id','common_name','country','amount','fileAttached']
+    
 
