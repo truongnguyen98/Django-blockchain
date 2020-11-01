@@ -1,0 +1,14 @@
+{% extends "blockchain/base.html" %}
+{% block content%}
+    <h1> Check your product</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="product_id">Enter product ID</label><br>
+        <input type="number" name="product_id" >
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Check</button>
+        </div>
+    </form>
+    
+    
+{%endblock content%}

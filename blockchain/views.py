@@ -1,66 +1,68 @@
 from django.shortcuts import render,redirect
-from .forms import ProducerForm,ShipperForm,DetailerForm,WholesalerForm
-from .models import Transaction
+from .forms import ProducerForm,ShipperForm,DetailerForm,WholesalerForm,LinksMultiForm
+from .models import ProducerModel,ShipperModel,DetailerModel,WholesalerModel
 from django.contrib import messages
 from rest_framework import generics,mixins
 from rest_framework.generics import CreateAPIView,ListAPIView
-from .serializers import BlockSerializer
 from rest_framework.views import APIView
 from django.db import models
-from web3 import Web3
-import json
+
+from .services import TransactionService
+from django.contrib.auth.decorators import login_required
 
 
+tx_service = TransactionService()
 
-
-url = "HTTP://127.0.0.1:7545"
-
-web3 = Web3(Web3.HTTPProvider(url))
-abi = json.loads('[{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint16","name":"id","type":"uint16"},{"indexed":false,"internalType":"string","name":"data","type":"string"}],"name":"ProducerEvent","type":"event"},{"constant":false,"inputs":[{"internalType":"string","name":"_data","type":"string"}],"name":"addProducer","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"uint16","name":"_id","type":"uint16"}],"name":"getProducer","outputs":[{"internalType":"uint16","name":"","type":"uint16"},{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"}]')
-address = "0x6C8612bE27Bc03c3146ccb9f3FF3e953e382eE56"
-contract = web3.eth.contract(abi = abi, address = address)
-web3.eth.defaultAccount = web3.eth.accounts[0]
-
-
+@login_required
 def home(request):
+    current_link = request.user.widget.lower()
+
+    tx_service.setup_blockchain_connection(current_link)
+
     if request.method == 'POST':
-        if request.user.widget == "producer":
-            form = ProducerForm(data=request.POST)
-        elif request.user.widget == "shipper":
-            form = ShipperForm(data=request.POST)
-        elif request.user.widget == "wholesaler":
-            form = WholesalerForm(data=request.POST)
-        elif request.user.widget == "detailer":
-            form = DetailerForm(data=request.POST)
+        form_class = LinksMultiForm(request.POST)
+        form_for_link= form_class[current_link]
 
-        if form.is_valid():
-            instance = form.save(commit=False)
-            instance.save()
-            contract.functions.addProducer(form.cleaned_data.get("common_name")).transact()
-
+        print(form_class.is_valid())
+        if form_for_link.is_valid():
+            tx_service.add_link(form_for_link)
+            form_for_link.save(commit=False)
             print("Form posted correctly!")
-            print("Index: ",form.cleaned_data.get("index"))
-            print("Common name: ", form.cleaned_data.get("common_name"))
+            print("Index: ",form_for_link.cleaned_data.get("product_id"))
+            print("Common name: ", form_for_link.cleaned_data.get("common_name"))
             messages.success(request, 'You posted a form successfully')
             return redirect('blockchain-home')
-
     else:
-        if request.user.widget == "producer":
-            form = ProducerForm()
-        elif request.user.widget == "shipper":
-            form = ShipperForm()
-        elif request.user.widget == "wholesaler":
-            form = WholesalerForm()
-        elif request.user.widget == "detailer":
-            form = DetailerForm()
+        form_class = LinksMultiForm()
+        form_for_link= form_class[current_link]
 
-
-    return render(request,'blockchain/home.html',{'form': form})
+    return render(request,'blockchain/home.html',{'form': form_for_link})
 
 def about(request):
     return render(request,'blockchain/about.html',{'title':'About'})
-    
 
+def enter_prod_id(request):
+    current_link = request.user.widget.lower()
+
+    tx_service.setup_blockchain_connection(current_link)
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        received_ = tx_service.get_link_by_id(product_id)
+        print("Received product id: {}".format(get_id))
+        request.session['tracked_product_id'] = get_id
+        #request.session['tracked_product_data'] = get_data
+
+        return redirect('/tracking')
+    
+    return render(request, 'blockchain/enter_prod_id.html')
+    
+def tracking(request):
+    tracked_product_id = request.session['tracked_product_id']
+    tracked_product = {
+        'id': tracked_product_id,
+        #'data':tracked_product_data,
+    }
+    return render(request, 'blockchain/tracking.html', context = tracked_product)
      
 
 
