@@ -14,7 +14,7 @@ class Transaction (models.Model):
     country = models.CharField(max_length=50)
     amount = models.IntegerField()
     common_name= models.TextField(blank=True, max_length=255,null=True)
-    #fileAttached = models.FileField()
+    fileAttached = models.FileField()
     
 
     def __str__(self):

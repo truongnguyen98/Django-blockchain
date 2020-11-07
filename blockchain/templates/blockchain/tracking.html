@@ -1,8 +1,86 @@
 {% extends "blockchain/base.html" %}
+
 {% block content%}
-    <h1> Tracking</h1>
-    <h3>Id: {{id}}</h3>
-    <h3>Data: {{data}}</h3>
+<div class="container mt-3 mb-5">
+    <div class="row">
+        <div class="col-md-8">
+            <h3>Product ID: {{id}}</h3>
+            <ul class="timeline">
+                <li>
+                    <span>2005</span>
+                    <a href="#collapseOne" data-toggle="collapse">Producer</a>                            
+                    <div id="collapseOne" class="collapse">
+                        <div class="card-body">
+                            <table class="table">
+                                <tbody>
+                                    {% for key,value in producer_fields.items %} 
+                                    <tr>
+                                        <th scope="row">{{key}}</th>
+                                        <td>{{value}}</td>
+                                    </tr>               
+                                    {% endfor %}
+                                </tbody>
+                                </table>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <span>2006</span>
+                    <a href="#collapseTwo" data-toggle="collapse">Shipper</a>                            
+                    <div id="collapseTwo" class="collapse" >
+                        <div class="card-body">
+                            <table class="table">
+                                <tbody>
+                                    {% for key,value in shipper_fields.items %} 
+                                    <tr>
+                                        <th scope="row">{{key}}</th>
+                                        <td>{{value}}</td>
+                                    </tr>               
+                                    {% endfor %}
+                                </tbody>
+                                </table>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <span>2007</span>
+                    <a href="#collapseThree" data-toggle="collapse">Wholesaler</a>                            
+                    <div id="collapseThree" class="collapse" >
+                        <div class="card-body">
+                            <table class="table">
+                                <tbody>
+                                    {% for key,value in wholesaler_fields.items %} 
+                                    <tr>
+                                        <th scope="row">{{key}}</th>
+                                        <td>{{value}}</td>
+                                    </tr>               
+                                    {% endfor %}
+                                </tbody>
+                                </table>
+                        </div>
+                    </div>
+                </li>
 
-
+                <li>
+                    <span>2008</span>
+                    <a href="#collapseThree" data-toggle="collapse">Detailer</a>                            
+                    <div id="collapseThree" class="collapse" >
+                        <div class="card-body">
+                            <table class="table">
+                                <tbody>
+                                    {% for key,value in detailer_fields.items %} 
+                                    <tr>
+                                        <th scope="row">{{key}}</th>
+                                        <td>{{value}}</td>
+                                    </tr>               
+                                    {% endfor %}
+                                </tbody>
+                                </table>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 {%endblock content%}

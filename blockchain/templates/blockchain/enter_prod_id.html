@@ -1,14 +1,19 @@
 {% extends "blockchain/base.html" %}
+{% load static %}
 {% block content%}
-    <h1> Check your product</h1>
+<div class="row justify-content-md-center">
+    <h1><b>Enter product ID</b></h1>
+</div>
+<div class="row justify-content-md-center">
     <form method="POST">
         {% csrf_token %}
-        <label for="product_id">Enter product ID</label><br>
-        <input type="number" name="product_id" >
-        <div class="form-group">
+        <input type="number" name="product_id" placeholder="Your product id" >
+        <div class="form-group text-center">
             <button class="btn btn-outline-info" type="submit">Check</button>
         </div>
     </form>
-    
-    
+</div>
+<div class="row justify-content-md-center">
+    <img src="{% static 'blockchain/truck_on_road_img.png' %}" class="img-fluid" alt="Enter page image" width="300px" height="300px">
+</div>
 {%endblock content%}
